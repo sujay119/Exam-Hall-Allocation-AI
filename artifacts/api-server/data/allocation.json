@@ -971,7 +971,7 @@
     "initial_soft_conflicts": 24,
     "final_conflicts": 0,
     "hard_constraint_violations": 0,
-    "execution_time_seconds": 0.254551
+    "execution_time_seconds": 0.23317
   },
   "totals": {
     "students": 30,
@@ -1026,5 +1026,5 @@
       "count": 18
     }
   ],
-  "created_at": "2026-10-02T17:40:35.390665+00:00"
+  "created_at": "2026-10-02T17:53:01.014377+00:00"
 }
