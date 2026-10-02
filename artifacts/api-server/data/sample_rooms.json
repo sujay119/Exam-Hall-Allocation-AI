@@ -1,0 +1,26 @@
+[
+  {
+    "id": "A",
+    "name": "North Hall",
+    "rows": 5,
+    "columns": 6,
+    "capacity": 30,
+    "accessible_seats": ["A-R1-C1"]
+  },
+  {
+    "id": "B",
+    "name": "East Hall",
+    "rows": 5,
+    "columns": 6,
+    "capacity": 30,
+    "accessible_seats": ["B-R1-C1"]
+  },
+  {
+    "id": "C",
+    "name": "West Hall",
+    "rows": 5,
+    "columns": 6,
+    "capacity": 30,
+    "accessible_seats": ["C-R1-C1"]
+  }
+]

@@ -2,19 +2,29 @@ openapi: 3.1.0
 info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
-  version: 0.1.0
-  description: API specification
+  version: 1.0.0
+  description: REST API for student, room, exam and AI seating allocation management
 servers:
   - url: /api
     description: Base API path
 tags:
-  - name: health
-    description: Health operations
+  - name: dashboard
+    description: Dashboard summaries and health
+  - name: students
+    description: Student records and CSV import
+  - name: rooms
+    description: Examination rooms and seat configuration
+  - name: exams
+    description: Examination schedules
+  - name: allocation
+    description: CSP allocation, results and roll-number lookup
+  - name: constraints
+    description: Soft seating preferences
 paths:
   /healthz:
     get:
       operationId: healthCheck
-      tags: [health]
+      tags: [dashboard]
       summary: Health check
       description: Returns server health status
       responses:
@@ -24,13 +34,561 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /dashboard:
+    get:
+      operationId: getDashboard
+      tags: [dashboard]
+      summary: Get dashboard totals and latest allocation summary
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+  /students:
+    get:
+      operationId: getStudents
+      tags: [students]
+      summary: List students
+      responses:
+        "200":
+          description: Student records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Student"
+    post:
+      operationId: createStudent
+      tags: [students]
+      summary: Add a student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentInput"
+      responses:
+        "201":
+          description: Student created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "400":
+          $ref: "#/components/responses/ApiError"
+  /students/{studentId}:
+    parameters:
+      - $ref: "#/components/parameters/StudentId"
+    put:
+      operationId: updateStudent
+      tags: [students]
+      summary: Update a student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudentInput"
+      responses:
+        "200":
+          description: Updated student
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "404":
+          $ref: "#/components/responses/ApiError"
+    delete:
+      operationId: deleteStudent
+      tags: [students]
+      summary: Delete a student
+      responses:
+        "200":
+          description: Deleted student
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MutationResult"
+        "404":
+          $ref: "#/components/responses/ApiError"
+  /students/load-sample:
+    post:
+      operationId: loadSampleStudents
+      tags: [students]
+      summary: Add the built-in sample students without duplicates
+      responses:
+        "200":
+          description: Sample load result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MutationResult"
+  /students/import:
+    post:
+      operationId: importStudentsCsv
+      tags: [students]
+      summary: Import students from CSV text
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CsvImportInput"
+      responses:
+        "200":
+          description: CSV import result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImportResult"
+        "400":
+          $ref: "#/components/responses/ApiError"
+  /rooms:
+    get:
+      operationId: getRooms
+      tags: [rooms]
+      summary: List rooms
+      responses:
+        "200":
+          description: Examination rooms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Room"
+    post:
+      operationId: createRoom
+      tags: [rooms]
+      summary: Add a room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoomInput"
+      responses:
+        "201":
+          description: Room created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "400":
+          $ref: "#/components/responses/ApiError"
+  /rooms/{roomId}:
+    parameters:
+      - name: roomId
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      operationId: updateRoom
+      tags: [rooms]
+      summary: Update a room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoomInput"
+      responses:
+        "200":
+          description: Updated room
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Room"
+        "404":
+          $ref: "#/components/responses/ApiError"
+    delete:
+      operationId: deleteRoom
+      tags: [rooms]
+      summary: Delete a room
+      responses:
+        "200":
+          description: Deleted room
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MutationResult"
+        "404":
+          $ref: "#/components/responses/ApiError"
+  /exams:
+    get:
+      operationId: getExams
+      tags: [exams]
+      summary: List exams
+      responses:
+        "200":
+          description: Exams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Exam"
+    post:
+      operationId: createExam
+      tags: [exams]
+      summary: Add an exam
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamInput"
+      responses:
+        "201":
+          description: Exam created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exam"
+        "400":
+          $ref: "#/components/responses/ApiError"
+  /exams/{examId}:
+    parameters:
+      - name: examId
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      operationId: updateExam
+      tags: [exams]
+      summary: Update an exam
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamInput"
+      responses:
+        "200":
+          description: Updated exam
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exam"
+        "404":
+          $ref: "#/components/responses/ApiError"
+    delete:
+      operationId: deleteExam
+      tags: [exams]
+      summary: Delete an exam
+      responses:
+        "200":
+          description: Deleted exam
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MutationResult"
+        "404":
+          $ref: "#/components/responses/ApiError"
+  /constraints:
+    get:
+      operationId: getConstraints
+      tags: [constraints]
+      summary: Get soft seating preferences
+      responses:
+        "200":
+          description: Constraint settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConstraintSettings"
+    patch:
+      operationId: updateConstraints
+      tags: [constraints]
+      summary: Update soft seating preferences
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConstraintSettings"
+      responses:
+        "200":
+          description: Updated constraint settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConstraintSettings"
+  /allocation/run:
+    post:
+      operationId: runAllocation
+      tags: [allocation]
+      summary: Run CSP backtracking and Min-Conflicts optimization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AllocationInput"
+      responses:
+        "200":
+          description: Allocation results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllocationResult"
+        "422":
+          $ref: "#/components/responses/ApiError"
+  /allocation/result:
+    get:
+      operationId: getAllocationResult
+      tags: [allocation]
+      summary: Get the latest allocation result
+      responses:
+        "200":
+          description: Latest allocation or null
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllocationResult"
+        "404":
+          $ref: "#/components/responses/ApiError"
+  /student/{studentId}:
+    get:
+      operationId: getStudentSeat
+      tags: [allocation]
+      summary: Find a student and their allocated seat by student ID or roll number
+      parameters:
+        - $ref: "#/components/parameters/StudentId"
+      responses:
+        "200":
+          description: Student seat lookup
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentSeat"
+        "404":
+          $ref: "#/components/responses/ApiError"
 components:
+  parameters:
+    StudentId:
+      name: studentId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    ApiError:
+      description: Request could not be completed
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
-        status:
-          type: string
-      required:
-        - status
+        status: { type: string }
+    ApiError:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+    MutationResult:
+      type: object
+      required: [success, message]
+      properties:
+        success: { type: boolean }
+        message: { type: string }
+        count: { type: integer }
+    Student:
+      type: object
+      required: [id, name, roll_number, class_name, section, subject, special_requirement]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        roll_number: { type: string }
+        class_name: { type: string }
+        section: { type: string }
+        subject: { type: string }
+        special_requirement: { type: ["string", "null"] }
+    StudentInput:
+      type: object
+      required: [id, name, roll_number, class_name, section, subject]
+      properties:
+        id: { type: string, minLength: 1 }
+        name: { type: string, minLength: 1 }
+        roll_number: { type: string, minLength: 1 }
+        class_name: { type: string, minLength: 1 }
+        section: { type: string, minLength: 1 }
+        subject: { type: string, minLength: 1 }
+        special_requirement: { type: ["string", "null"] }
+    Room:
+      type: object
+      required: [id, name, rows, columns, capacity, accessible_seats]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        rows: { type: integer }
+        columns: { type: integer }
+        capacity: { type: integer }
+        accessible_seats:
+          type: array
+          items: { type: string }
+    RoomInput:
+      type: object
+      required: [id, name, rows, columns]
+      properties:
+        id: { type: string, minLength: 1 }
+        name: { type: string, minLength: 1 }
+        rows: { type: integer, minimum: 1, maximum: 30 }
+        columns: { type: integer, minimum: 1, maximum: 30 }
+        accessible_seats:
+          type: array
+          items: { type: string }
+    Exam:
+      type: object
+      required: [id, name, subject, date, time, duration]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        subject: { type: string }
+        date: { type: string, format: date }
+        time: { type: string }
+        duration: { type: integer }
+    ExamInput:
+      type: object
+      required: [id, name, subject, date, time, duration]
+      properties:
+        id: { type: string, minLength: 1 }
+        name: { type: string, minLength: 1 }
+        subject: { type: string, minLength: 1 }
+        date: { type: string, format: date }
+        time: { type: string, minLength: 1 }
+        duration: { type: integer, minimum: 1 }
+    CsvImportInput:
+      type: object
+      required: [csv]
+      properties:
+        csv: { type: string }
+    ImportResult:
+      type: object
+      required: [success, imported, errors]
+      properties:
+        success: { type: boolean }
+        imported: { type: integer }
+        errors:
+          type: array
+          items: { type: string }
+    ConstraintSettings:
+      type: object
+      required: [avoid_same_section, avoid_same_subject, section_weight, subject_weight]
+      properties:
+        avoid_same_section: { type: boolean }
+        avoid_same_subject: { type: boolean }
+        section_weight: { type: number, minimum: 0, maximum: 10 }
+        subject_weight: { type: number, minimum: 0, maximum: 10 }
+    AllocationInput:
+      type: object
+      required: [exam_id]
+      properties:
+        exam_id: { type: string }
+    AllocationResult:
+      type: object
+      required: [success, exam, assignments, rooms, conflicts, statistics, totals, created_at]
+      properties:
+        success: { type: boolean }
+        exam: { $ref: "#/components/schemas/Exam" }
+        assignments:
+          type: array
+          items: { $ref: "#/components/schemas/SeatAssignment" }
+        rooms:
+          type: array
+          items: { $ref: "#/components/schemas/RoomAllocation" }
+        conflicts:
+          type: array
+          items: { $ref: "#/components/schemas/Conflict" }
+        statistics:
+          type: object
+          additionalProperties: true
+        totals:
+          type: object
+          additionalProperties: true
+        hard_constraint_violations:
+          type: array
+          items: { type: string }
+        explanation: { type: string }
+        steps:
+          type: array
+          items:
+            type: object
+            required: [title, detail, count]
+            properties:
+              title: { type: string }
+              detail: { type: string }
+              count: { type: integer }
+        created_at: { type: string, format: date-time }
+    SeatAssignment:
+      type: object
+      required: [student_id, student_name, roll_number, class_name, section, subject, room_id, room_name, row, column, seat_id, special]
+      properties:
+        student_id: { type: string }
+        student_name: { type: string }
+        roll_number: { type: string }
+        class_name: { type: string }
+        section: { type: string }
+        subject: { type: string }
+        room_id: { type: string }
+        room_name: { type: string }
+        row: { type: integer }
+        column: { type: integer }
+        seat_id: { type: string }
+        special: { type: boolean }
+    RoomAllocation:
+      type: object
+      required: [room_id, room_name, rows, columns, seats]
+      properties:
+        room_id: { type: string }
+        room_name: { type: string }
+        rows: { type: integer }
+        columns: { type: integer }
+        seats:
+          type: array
+          items: { $ref: "#/components/schemas/SeatAssignment" }
+    Conflict:
+      type: object
+      required: [student_ids, roll_numbers, reasons, score]
+      properties:
+        student_ids:
+          type: array
+          items: { type: string }
+        roll_numbers:
+          type: array
+          items: { type: string }
+        reasons:
+          type: array
+          items: { type: string }
+        score: { type: number }
+    StudentSeat:
+      type: object
+      required: [student, assignment]
+      properties:
+        student: { $ref: "#/components/schemas/Student" }
+        assignment:
+          type: ["object", "null"]
+          additionalProperties: true
+    DashboardSummary:
+      type: object
+      required: [students, rooms, total_seats, occupied_seats, available_seats, conflict_count, allocation_status, exam_count, latest_allocation]
+      properties:
+        students: { type: integer }
+        rooms: { type: integer }
+        total_seats: { type: integer }
+        occupied_seats: { type: integer }
+        available_seats: { type: integer }
+        conflict_count: { type: integer }
+        allocation_status: { type: string }
+        exam_count: { type: integer }
+        latest_allocation: { type: ["object", "null"], additionalProperties: true }
 

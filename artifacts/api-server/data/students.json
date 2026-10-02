@@ -1,0 +1,272 @@
+[
+  {
+    "id": "S001",
+    "name": "Aarav Mehta",
+    "roll_number": "26CS001",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Mathematics",
+    "special_requirement": "Front row"
+  },
+  {
+    "id": "S002",
+    "name": "Ananya Rao",
+    "roll_number": "26CS002",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Physics",
+    "special_requirement": "Accessible seat"
+  },
+  {
+    "id": "S003",
+    "name": "Ishaan Kapoor",
+    "roll_number": "26CS003",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S004",
+    "name": "Diya Nair",
+    "roll_number": "26CS004",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S005",
+    "name": "Arjun Iyer",
+    "roll_number": "26CS005",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S006",
+    "name": "Myra Shah",
+    "roll_number": "26CS006",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S007",
+    "name": "Vivaan Reddy",
+    "roll_number": "26CS007",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S008",
+    "name": "Saanvi Patel",
+    "roll_number": "26CS008",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S009",
+    "name": "Aditya Menon",
+    "roll_number": "26CS009",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S010",
+    "name": "Aadhya Kulkarni",
+    "roll_number": "26CS010",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S011",
+    "name": "Reyansh Joshi",
+    "roll_number": "26CS011",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S012",
+    "name": "Pari Desai",
+    "roll_number": "26CS012",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S013",
+    "name": "Krish Verma",
+    "roll_number": "26CS013",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S014",
+    "name": "Navya Choudhary",
+    "roll_number": "26CS014",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S015",
+    "name": "Kabir Sethi",
+    "roll_number": "26CS015",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S016",
+    "name": "Ira Malhotra",
+    "roll_number": "26CS016",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S017",
+    "name": "Dhruv Bansal",
+    "roll_number": "26CS017",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S018",
+    "name": "Tara Mukherjee",
+    "roll_number": "26CS018",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S019",
+    "name": "Rohan Pillai",
+    "roll_number": "26CS019",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S020",
+    "name": "Meera Krishnan",
+    "roll_number": "26CS020",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S021",
+    "name": "Atharv Gupta",
+    "roll_number": "26CS021",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S022",
+    "name": "Kiara Fernandes",
+    "roll_number": "26CS022",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S023",
+    "name": "Yash Thakur",
+    "roll_number": "26CS023",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S024",
+    "name": "Zara Thomas",
+    "roll_number": "26CS024",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S025",
+    "name": "Samar Banerjee",
+    "roll_number": "26CS025",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S026",
+    "name": "Mira Shetty",
+    "roll_number": "26CS026",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S027",
+    "name": "Neil Saxena",
+    "roll_number": "26CS027",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S028",
+    "name": "Amara Dutta",
+    "roll_number": "26CS028",
+    "class_name": "BSc Computer Science",
+    "section": "A",
+    "subject": "Physics",
+    "special_requirement": null
+  },
+  {
+    "id": "S029",
+    "name": "Parth Anand",
+    "roll_number": "26CS029",
+    "class_name": "BSc Computer Science",
+    "section": "B",
+    "subject": "Mathematics",
+    "special_requirement": null
+  },
+  {
+    "id": "S030",
+    "name": "Leela Bose",
+    "roll_number": "26CS030",
+    "class_name": "BSc Computer Science",
+    "section": "C",
+    "subject": "Physics",
+    "special_requirement": null
+  }
+]

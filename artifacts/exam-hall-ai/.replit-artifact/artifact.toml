@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ExamAI Hall Allocation"
+description = "An exam administration tool for managing students, rooms, and exams, then using a Python CSP solver to produce and explain conflict-aware seating plans."
+version = "1.0.0"
+id = "artifacts/exam-hall-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22691
+
+[services.development]
+run = "pnpm --filter @workspace/exam-hall-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/exam-hall-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/exam-hall-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22691"
+BASE_PATH = "/"

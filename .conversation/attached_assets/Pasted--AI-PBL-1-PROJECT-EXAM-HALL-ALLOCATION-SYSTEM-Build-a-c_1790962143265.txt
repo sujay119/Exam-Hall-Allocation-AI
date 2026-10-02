@@ -1,0 +1,752 @@
+# AI PBL-1 PROJECT — EXAM HALL ALLOCATION SYSTEM
+
+Build a complete, working **AI-Based Exam Hall Sorting and Allocation System** as a full-stack web application.
+
+## PROJECT TITLE
+
+**AI-Based Exam Hall Allocation Using Constraint Satisfaction and Heuristic Search**
+
+## MAIN OBJECTIVE
+
+Create a web application that automatically assigns students to examination halls and seats using Artificial Intelligence.
+
+The system must use **Constraint Satisfaction Problem (CSP)** concepts and **Backtracking Search** to generate a valid seating arrangement while satisfying multiple constraints.
+
+The project should clearly demonstrate concepts from my AI syllabus:
+
+- Constraint Satisfaction Problems
+- Constraint Propagation
+- Backtracking Search
+- Local Search
+- Heuristic Search
+- Intelligent Agents
+- Problem-Solving Agents
+- Heuristic Functions
+
+Do NOT make this just a normal CRUD application. The actual allocation algorithm must be implemented in Python and visibly used by the application.
+
+---
+
+# 1. TECHNOLOGY STACK
+
+Use:
+
+### Backend
+- Python 3
+- Flask
+- REST API
+- No unnecessary frameworks
+
+### Frontend
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- Bootstrap 5 or a modern custom CSS design
+
+### Data
+Use JSON files initially so the project works without requiring a database.
+
+Optionally structure the code so SQLite can be added later.
+
+---
+
+# 2. IMPORTANT FILE SEPARATION
+
+The AI algorithm MUST be in a separate Python file.
+
+Do NOT put the entire application in one Python file.
+
+Use this structure:
+
+```text
+exam-hall-ai/
+│
+├── app.py
+│
+├── ai/
+│   ├── __init__.py
+│   ├── csp_solver.py
+│   ├── constraints.py
+│   ├── heuristics.py
+│   └── allocation.py
+│
+├── models/
+│   ├── __init__.py
+│   ├── student.py
+│   ├── room.py
+│   └── exam.py
+│
+├── data/
+│   ├── students.json
+│   ├── rooms.json
+│   └── exams.json
+│
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── students.html
+│   ├── rooms.html
+│   ├── exams.html
+│   ├── allocation.html
+│   └── results.html
+│
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   │
+│   └── js/
+│       ├── main.js
+│       ├── students.js
+│       ├── rooms.js
+│       └── allocation.js
+│
+├── requirements.txt
+├── README.md
+└── run.py
+```
+
+The MOST IMPORTANT AI file should be:
+
+```text
+ai/csp_solver.py
+```
+
+This file must contain the actual CSP solving algorithm.
+
+---
+
+# 3. CORE AI ALGORITHM
+
+Implement the exam hall allocation as a **Constraint Satisfaction Problem**.
+
+Define:
+
+### Variables
+
+Each student is a variable.
+
+Example:
+
+```text
+S001
+S002
+S003
+...
+```
+
+### Domains
+
+Each student's domain contains possible seats.
+
+Example:
+
+```text
+Room A - Row 1 - Seat 1
+Room A - Row 1 - Seat 2
+Room A - Row 1 - Seat 3
+...
+```
+
+### Constraints
+
+Implement at least these constraints:
+
+1. A seat can contain only one student.
+2. A student can occupy only one seat.
+3. Room capacity cannot be exceeded.
+4. Students from the same class/section should preferably not sit adjacent to each other.
+5. Students taking the same subject should preferably not sit adjacent to each other.
+6. Restricted/special students can be assigned only to suitable seats if such information is provided.
+7. All mandatory constraints must be satisfied.
+8. The algorithm should minimize seating conflicts.
+
+---
+
+# 4. CSP BACKTRACKING
+
+Implement a real recursive backtracking solver.
+
+Use:
+
+```text
+backtracking_search()
+```
+
+and clearly separate:
+
+```text
+select_unassigned_variable()
+order_domain_values()
+is_consistent()
+forward_checking()
+```
+
+The solver should return:
+
+```python
+{
+    "success": True,
+    "assignment": {...},
+    "conflicts": [],
+    "statistics": {...}
+}
+```
+
+If no valid arrangement exists, return a useful explanation instead of crashing.
+
+---
+
+# 5. HEURISTICS
+
+Implement AI heuristics.
+
+At minimum implement:
+
+### MRV
+
+Minimum Remaining Values.
+
+Choose the student with the smallest number of valid remaining seats.
+
+### Degree Heuristic
+
+If two students have the same MRV value, select the student involved in the largest number of constraints.
+
+### Least Constraining Value
+
+Prefer the seat that restricts the fewest options for other students.
+
+Clearly comment the code explaining these AI concepts.
+
+---
+
+# 6. CONSTRAINT PROPAGATION
+
+Implement forward checking.
+
+Whenever a student is assigned:
+
+```text
+Student → Seat
+```
+
+remove conflicting seats from the domains of other students.
+
+If another student's domain becomes empty:
+
+```text
+Backtrack
+```
+
+This should be a genuine implementation rather than a placeholder function.
+
+---
+
+# 7. LOCAL SEARCH
+
+Also implement a simple optional local-search optimization stage.
+
+For example:
+
+```text
+Initial valid allocation
+        ↓
+Calculate conflict score
+        ↓
+Swap students
+        ↓
+Calculate new conflict score
+        ↓
+Keep improvement
+        ↓
+Repeat
+```
+
+Implement either:
+
+- Hill Climbing
+
+or
+
+- Min-Conflicts
+
+Prefer **Min-Conflicts** because it is highly relevant to CSP.
+
+Keep this implementation in:
+
+```text
+ai/heuristics.py
+```
+
+---
+
+# 8. INPUT FEATURES
+
+The web application must allow the administrator to enter/import:
+
+### Students
+
+Fields:
+
+```text
+Student ID
+Student Name
+Roll Number
+Class
+Section
+Subject
+Special Requirement
+```
+
+Provide both:
+
+- Manual student entry
+- Load sample students
+
+Also provide CSV import if practical.
+
+---
+
+### Rooms
+
+Fields:
+
+```text
+Room ID
+Room Name
+Rows
+Columns
+Capacity
+```
+
+Example:
+
+```text
+Room A
+Rows: 5
+Columns: 6
+Capacity: 30
+```
+
+Automatically calculate:
+
+```text
+capacity = rows × columns
+```
+
+---
+
+### Exam
+
+Fields:
+
+```text
+Exam Name
+Subject
+Date
+Time
+Duration
+```
+
+---
+
+# 9. ALLOCATION WORKFLOW
+
+Create a clear workflow:
+
+```text
+Dashboard
+    ↓
+Add Students
+    ↓
+Add Examination Rooms
+    ↓
+Create Exam
+    ↓
+Configure Constraints
+    ↓
+Run AI Allocation
+    ↓
+AI CSP Solver
+    ↓
+Constraint Validation
+    ↓
+Optimization
+    ↓
+Final Seating Arrangement
+```
+
+---
+
+# 10. DASHBOARD
+
+Create a modern dashboard showing:
+
+```text
+Total Students
+Total Rooms
+Total Seats
+Seats Available
+Seats Occupied
+Conflicts
+Allocation Status
+```
+
+Use cards and simple charts where appropriate.
+
+Example:
+
+```text
+┌───────────────┐
+│ Students      │
+│ 120           │
+└───────────────┘
+
+┌───────────────┐
+│ Rooms         │
+│ 4             │
+└───────────────┘
+
+┌───────────────┐
+│ Seats         │
+│ 160           │
+└───────────────┘
+
+┌───────────────┐
+│ Conflicts     │
+│ 0             │
+└───────────────┘
+```
+
+---
+
+# 11. SEATING VISUALIZATION
+
+This is extremely important.
+
+After allocation, show every examination room visually.
+
+Example:
+
+```text
+ROOM A
+
+       Column
+       1     2     3     4     5
+     ┌─────┬─────┬─────┬─────┬─────┐
+ R1  │ S01 │ S17 │ S03 │ S19 │ S05 │
+     ├─────┼─────┼─────┼─────┼─────┤
+ R2  │ S22 │ S07 │ S24 │ S09 │ S26 │
+     ├─────┼─────┼─────┼─────┼─────┤
+ R3  │ ... │ ... │ ... │ ... │ ... │
+     └─────┴─────┴─────┴─────┴─────┘
+```
+
+Each seat should display:
+
+```text
+Roll Number
+Student Name
+Section
+```
+
+Use different visual states for:
+
+- Occupied
+- Empty
+- Conflict
+- Special seat
+
+---
+
+# 12. ALLOCATION RESULTS
+
+Create a results page containing:
+
+### Room-wise allocation
+
+```text
+Room A
+Student → Seat
+```
+
+### Student-wise lookup
+
+Allow the administrator to search:
+
+```text
+Roll Number
+```
+
+and display:
+
+```text
+Student: Rahul
+Roll Number: 23A001
+Room: A
+Row: 2
+Column: 4
+Seat: A-R2-C4
+```
+
+---
+
+# 13. CONFLICT ANALYSIS
+
+After allocation, display:
+
+```text
+Total Students: 120
+Total Seats: 150
+
+Students Allocated: 120
+Empty Seats: 30
+
+Hard Constraint Violations: 0
+Soft Constraint Violations: 2
+
+Final Conflict Score: 2
+```
+
+If conflicts exist, show them clearly:
+
+```text
+⚠ Student S024 and S038 are from the same section
+and are seated adjacent to each other.
+```
+
+---
+
+# 14. AI EXPLANATION PANEL
+
+Create an "AI Algorithm" section in the UI.
+
+Explain the process:
+
+```text
+1. Problem Formulation
+2. Variables Created
+3. Domains Generated
+4. Constraints Applied
+5. MRV Selected
+6. Forward Checking Applied
+7. Backtracking Performed
+8. Valid Assignment Found
+9. Min-Conflicts Optimization Applied
+```
+
+Show statistics:
+
+```text
+Variables: 120
+Initial Domains: 150
+Assignments Tried: 348
+Backtracks: 27
+Constraint Checks: 1,824
+Final Conflicts: 0
+Execution Time: 0.18 seconds
+```
+
+These values must come from the actual algorithm, not hardcoded fake values.
+
+---
+
+# 15. API ENDPOINTS
+
+Create Flask API routes such as:
+
+```text
+GET  /api/students
+POST /api/students
+
+GET  /api/rooms
+POST /api/rooms
+
+GET  /api/exams
+POST /api/exams
+
+POST /api/allocation/run
+
+GET  /api/allocation/result
+
+GET  /api/student/<student_id>
+```
+
+The frontend should communicate with the backend through these APIs.
+
+---
+
+# 16. SAMPLE DATA
+
+Include realistic sample data so the project works immediately after installation.
+
+Create:
+
+```text
+30 students
+3 rooms
+90 seats
+2 subjects
+```
+
+Make the sample data demonstrate the AI algorithm.
+
+For example:
+
+```text
+Students from different sections
+Students taking different subjects
+Different room capacities
+```
+
+---
+
+# 17. UI DESIGN
+
+Make the frontend look like a modern AI administration dashboard.
+
+Style:
+
+- Clean
+- Professional
+- Modern
+- Responsive
+- Dark/light interface
+- Blue/purple AI-inspired accents
+- Cards
+- Tables
+- Interactive seating grid
+- Smooth hover effects
+- Clear navigation sidebar
+
+Sidebar:
+
+```text
+🤖 ExamAI
+
+Dashboard
+Students
+Rooms
+Exams
+Constraints
+AI Allocation
+Results
+AI Analysis
+Settings
+```
+
+Do not make the UI overly complicated.
+
+---
+
+# 18. IMPORTANT PBL REQUIREMENT
+
+The project must make it very easy for me to explain the connection to my AI syllabus.
+
+Include comments and documentation explaining:
+
+```text
+CSP
+Variables
+Domains
+Constraints
+Constraint Propagation
+Backtracking
+MRV
+Degree Heuristic
+Least Constraining Value
+Hill Climbing / Min-Conflicts
+Intelligent Agent
+Problem-Solving Agent
+Heuristic Search
+```
+
+Create a section in README.md titled:
+
+# AI Concepts Used
+
+Explain each concept and exactly where it appears in the code.
+
+---
+
+# 19. CODE QUALITY
+
+Requirements:
+
+- Fully working code
+- No pseudo-code
+- No TODO placeholders
+- No fake AI
+- No hardcoded allocation result
+- Proper error handling
+- Clear Python comments
+- Modular architecture
+- Functions should have meaningful names
+- Avoid unnecessary dependencies
+- Use type hints where useful
+
+The project must run using:
+
+```bash
+pip install -r requirements.txt
+python run.py
+```
+
+Then open:
+
+```text
+http://127.0.0.1:5000
+```
+
+---
+
+# 20. README
+
+Create a detailed README containing:
+
+1. Project overview
+2. Problem statement
+3. Objectives
+4. Features
+5. Architecture
+6. Folder structure
+7. Installation
+8. How to run
+9. How the CSP works
+10. Algorithms used
+11. Heuristics
+12. API documentation
+13. Example input
+14. Example output
+15. AI syllabus mapping
+16. Future improvements
+
+Also include a simple architecture diagram using ASCII.
+
+---
+
+# 21. FINAL OUTPUT REQUIREMENT
+
+Generate the COMPLETE project with every file.
+
+Do not give me only snippets.
+
+Show each file separately using its exact filename.
+
+For example:
+
+```text
+exam-hall-ai/
+├── app.py
+├── ai/
+│   └── csp_solver.py
+...
+```
+
+Then provide the complete code for every important file.
+
+The project must be directly runnable after copying the files into the folder.
+
+Most importantly:
+
+**The AI/CSP algorithm must be implemented in `ai/csp_solver.py` as a separate Python module and imported by the Flask application.**

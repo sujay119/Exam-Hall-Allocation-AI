@@ -1,0 +1,1 @@
+- [Real solver outputs](examai-real-results.md) — seating plans and metrics must come from the current CSP run; report infeasibility instead of substituting results.

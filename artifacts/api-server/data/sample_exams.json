@@ -1,0 +1,18 @@
+[
+  {
+    "id": "EX-ALL",
+    "name": "Semester Examination Session",
+    "subject": "All subjects",
+    "date": "2026-10-12",
+    "time": "09:30",
+    "duration": 180
+  },
+  {
+    "id": "EX-MATH",
+    "name": "Mathematics Fundamentals",
+    "subject": "Mathematics",
+    "date": "2026-10-14",
+    "time": "13:00",
+    "duration": 120
+  }
+]

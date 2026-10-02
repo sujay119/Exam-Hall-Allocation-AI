@@ -1,0 +1,6 @@
+{
+  "avoid_same_section": true,
+  "avoid_same_subject": true,
+  "section_weight": 1,
+  "subject_weight": 1
+}
